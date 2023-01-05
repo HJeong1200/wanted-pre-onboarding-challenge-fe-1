@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { postAuth } from "../components/functions/auth/postAuth";
+import {
+  emailValidation,
+  passwordValidation,
+} from "../components/functions/auth/validation";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -9,41 +14,15 @@ export default function LoginPage() {
   useEffect(() => {
     if (localStorage.getItem("token")) {
       navigate("/");
+    } else {
+      navigate("/auth/login");
     }
-  });
+  }, []);
 
   const LOGINURL = "http://localhost:8080/users/login";
 
   const postLogin = () => {
-    const body = {
-      email,
-      password,
-    };
-
-    fetch(LOGINURL, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const { message, token } = data;
-        console.log(message);
-        localStorage.setItem("token", token);
-        navigate("/");
-      });
-  };
-
-  const emailValidation = (email: string) => {
-    if (email.includes("@") && email.includes(".")) return true;
-    return false;
-  };
-
-  const passwordValidation = (password: string) => {
-    if (password.length >= 8) return true;
-    return false;
+    postAuth(LOGINURL, email, password);
   };
 
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
