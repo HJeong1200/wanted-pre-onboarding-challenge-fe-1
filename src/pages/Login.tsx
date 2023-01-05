@@ -76,7 +76,7 @@ export default function LoginPage() {
       />
       <label htmlFor="Password">Password</label>
       <input
-        type="text"
+        type="password"
         id="Password"
         className="Login_Password_Input"
         onChange={changePassword}
