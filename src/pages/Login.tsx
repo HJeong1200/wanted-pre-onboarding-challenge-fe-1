@@ -1,8 +1,40 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      navigate("/");
+    }
+  });
+
+  const LOGINURL = "http://localhost:8080/users/login";
+
+  const postLogin = () => {
+    const body = {
+      email,
+      password,
+    };
+
+    fetch(LOGINURL, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        const { message, token } = data;
+        console.log(message);
+        localStorage.setItem("token", token);
+        navigate("/");
+      });
+  };
 
   const emailValidation = (email: string) => {
     if (email.includes("@") && email.includes(".")) return true;
@@ -26,7 +58,7 @@ export default function LoginPage() {
 
   const submitLoginForm = () => {
     if (emailValidation(email) && passwordValidation(password)) {
-      console.log(email, password);
+      postLogin();
     } else {
       console.log("Invalid");
     }
