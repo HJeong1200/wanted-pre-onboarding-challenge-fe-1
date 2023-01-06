@@ -66,6 +66,7 @@ export function Main() {
           const { id, title, updatedAt, createdAt, content } = el;
           return (
             <Todo
+              key={id}
               id={id}
               title={title}
               updatedAt={updatedAt}
