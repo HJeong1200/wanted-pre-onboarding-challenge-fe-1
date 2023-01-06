@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { TodoList } from "../types/Types";
+import { Todo } from "../components/Todo";
+import { TodoType } from "../types/Types";
 
 export function Main() {
-  const [todoList, setTodoList] = useState<TodoList[]>([]);
+  const [todoList, setTodoList] = useState<TodoType[]>([]);
   const [newTodoTitle, setNewTodoTitle] = useState("");
   const [newTodoContent, setNewTodoContent] = useState("");
   const navigate = useNavigate();
@@ -60,7 +61,20 @@ export function Main() {
 
   return (
     <div className="Todo_Container">
-      <ul className="Todo_List_Container"></ul>
+      <ul className="Todo_List_Container">
+        {todoList.map((el) => {
+          const { id, title, updatedAt, createdAt, content } = el;
+          return (
+            <Todo
+              id={id}
+              title={title}
+              updatedAt={updatedAt}
+              createdAt={createdAt}
+              content={content}
+            />
+          );
+        })}
+      </ul>
       <form
         action="submit"
         onSubmit={(e) => e.preventDefault()}
