@@ -1,9 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { TodoList } from "../types/Types";
 
 export function Main() {
-  const [todoList, setTodoList] = useState([]);
-  const [newTodo, setNewTodo] = useState("");
+  const [todoList, setTodoList] = useState<TodoList[]>([]);
+  const [newTodoTitle, setNewTodoTitle] = useState("");
+  const [newTodoContent, setNewTodoContent] = useState("");
   const navigate = useNavigate();
 
   const requestHeaders: HeadersInit = new Headers();
@@ -23,27 +25,58 @@ export function Main() {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setTodoList(data.data);
       });
-  }, []);
+  }, [todoList]);
 
-  const inputNewTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newTodo = e.target.value;
-    setNewTodo(newTodo);
+  const inputNewTodoTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newTodoTitle = e.target.value;
+    setNewTodoTitle(newTodoTitle);
+  };
+
+  const inputNewTodoContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    const newTodoContent = e.target.value;
+    setNewTodoContent(newTodoContent);
   };
 
   const submitNewTodo = () => {
-    console.log(newTodo);
+    requestHeaders.set("Content-Type", "application/json");
+
+    const body = {
+      title: newTodoTitle,
+      content: newTodoContent,
+    };
+
+    fetch("http://localhost:8080/todos", {
+      method: "POST",
+      headers: requestHeaders,
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        setTodoList([...todoList, data.data]);
+      });
   };
 
   return (
     <div className="Todo_Container">
       <ul className="Todo_List_Container"></ul>
-      <input type="text" className="Todo_Input" onChange={inputNewTodo} />
-      <button className="New_Todo_Submit" onClick={submitNewTodo}>
-        Submit
-      </button>
+      <form
+        action="submit"
+        onSubmit={(e) => e.preventDefault()}
+        className="Todo_Form_Container"
+      >
+        <input
+          type="text"
+          className="Todo_Title_Input"
+          onChange={inputNewTodoTitle}
+        />
+        <textarea
+          className="Todo_Content_Input"
+          onChange={inputNewTodoContent}
+        ></textarea>
+        <input type="submit" value="Submit" onClick={submitNewTodo} />
+      </form>
     </div>
   );
 }
