@@ -6,10 +6,26 @@ export function Main() {
   const [newTodo, setNewTodo] = useState("");
   const navigate = useNavigate();
 
+  const requestHeaders: HeadersInit = new Headers();
+  requestHeaders.set(
+    "Authorization",
+    localStorage.getItem("token") || "no token"
+  );
+
   useEffect(() => {
     if (!localStorage.getItem("token")) {
       navigate("/auth/login");
     }
+
+    fetch("http://localhost:8080/todos", {
+      method: "GET",
+      headers: requestHeaders,
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+        setTodoList(data.data);
+      });
   }, []);
 
   const inputNewTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
