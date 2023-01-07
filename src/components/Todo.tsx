@@ -7,7 +7,6 @@ export function Todo({ id, title, updatedAt, createdAt, content }: TodoType) {
       "Authorization",
       localStorage.getItem("token") || "no token"
     );
-
     fetch(`http://localhost:8080/todos/${id}`, {
       method: "DELETE",
       headers: requestHeaders,
