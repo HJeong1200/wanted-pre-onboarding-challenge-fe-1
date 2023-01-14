@@ -25,7 +25,7 @@ export function TodoList({ todoList, setTodoList }: TodoProps) {
       .then((data) => {
         setTodoList(data.data);
       });
-  }, [todoList]);
+  }, []);
 
   return (
     <div className="Todo_List_Container">

@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { TodoList } from "./TodoList";
-import { TodoType } from "../types/Types";
-import { Outlet } from "react-router";
+import { Outlet, useOutletContext } from "react-router";
 import requestHeaders from "../constants/Header";
+import useGetTodos from "../hooks/useGetTodos";
+import { TodoType } from "../types/Types";
 
 export function Main() {
-  const [todoList, setTodoList] = React.useState<TodoType[] | []>([]);
+  const { todoList, setTodoList } = useGetTodos();
   const [newTodoTitle, setNewTodoTitle] = useState("");
   const [newTodoContent, setNewTodoContent] = useState("");
 
@@ -55,7 +56,7 @@ export function Main() {
         ></textarea>
         <input type="submit" value="Submit" onClick={submitNewTodo} />
       </form>
-      <Outlet context={todoList} />
+      <Outlet />
     </div>
   );
 }

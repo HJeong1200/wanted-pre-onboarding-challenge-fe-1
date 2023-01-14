@@ -1,17 +1,15 @@
-import React from "react";
-import { useNavigate, useOutletContext, useParams } from "react-router";
-import { TodoType } from "../types/Types";
+import { useNavigate, useParams } from "react-router";
 import requestHeaders from "../constants/Header";
+import useGetTodo from "../hooks/useGetTodo";
 
 export function TodoContent() {
   const params = useParams();
-  const todoList: TodoType[] = useOutletContext();
-  const curTodo = todoList.filter((el) => el.id === params.id);
-  const { id, title, content, updatedAt, createdAt } = curTodo[0];
   const navigate = useNavigate();
-
+  console.log(params.id);
+  const curTodo = useGetTodo(params.id);
+  console.log(curTodo);
   const deleteTodo = () => {
-    fetch(`http://localhost:8080/todos/${id}`, {
+    fetch(`http://localhost:8080/todos/${params.id}`, {
       method: "DELETE",
       headers: requestHeaders,
     }).then(() => {
@@ -22,9 +20,11 @@ export function TodoContent() {
 
   return (
     <div className="Todo_Content_Container">
-      <div className="Todo_Content_Title">{title}</div>
-      <div className="Todo_Content_Content">{content}</div>
-      <div className="Todo_Content_Time">{updatedAt || createdAt}</div>
+      <div className="Todo_Content_Title">{curTodo.title}</div>
+      <div className="Todo_Content_Content">{curTodo.content}</div>
+      <div className="Todo_Content_Time">
+        {curTodo.updatedAt || curTodo.createdAt}
+      </div>
       <button>수정</button>
       <button onClick={deleteTodo}>삭제</button>
     </div>
