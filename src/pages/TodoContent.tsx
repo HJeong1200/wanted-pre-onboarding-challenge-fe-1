@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import requestHeaders from "../constants/Header";
+import { TODOSURL } from "../constants/URL";
 import useGetTodo from "../hooks/useGetTodo";
 
 export function TodoContent() {
@@ -11,9 +12,10 @@ export function TodoContent() {
   const [isEditMode, setIsEditMode] = useState(false);
   const [editedTitle, setEditedTitle] = useState(title);
   const [editedContent, setEditedContent] = useState(content);
+  const CONTENTURL = `${TODOSURL}/${params.id}`;
 
   const deleteTodo = () => {
-    fetch(`http://localhost:8080/todos/${params.id}`, {
+    fetch(CONTENTURL, {
       method: "DELETE",
       headers: requestHeaders,
     }).then(() => {
@@ -42,7 +44,7 @@ export function TodoContent() {
       content: editedContent,
     };
 
-    fetch(`http://localhost:8080/todos/${params.id}`, {
+    fetch(CONTENTURL, {
       method: "PUT",
       headers: requestHeaders,
       body: JSON.stringify(body),

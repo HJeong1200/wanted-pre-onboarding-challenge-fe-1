@@ -5,6 +5,7 @@ import {
   emailValidation,
   passwordValidation,
 } from "../components/functions/auth/validation";
+import { LOGINURL } from "../constants/URL";
 
 export default function LoginPage() {
   const [email, setEmail] = useState("");
@@ -18,8 +19,6 @@ export default function LoginPage() {
       navigate("/auth/login");
     }
   }, []);
-
-  const LOGINURL = "http://localhost:8080/users/login";
 
   const postLogin = () => {
     postAuth(LOGINURL, email, password);

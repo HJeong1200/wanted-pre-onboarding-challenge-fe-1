@@ -3,6 +3,7 @@ import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { TodoType } from "../types/Types";
 import requestHeaders from "../constants/Header";
+import { TODOSURL } from "../constants/URL";
 
 type TodoProps = {
   todoList: TodoType[];
@@ -17,7 +18,7 @@ export function TodoList({ todoList, setTodoList }: TodoProps) {
       navigate("/auth/login");
     }
 
-    fetch("http://localhost:8080/todos", {
+    fetch(TODOSURL, {
       method: "GET",
       headers: requestHeaders,
     })

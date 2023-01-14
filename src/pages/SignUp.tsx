@@ -5,6 +5,7 @@ import {
   emailValidation,
   passwordValidation,
 } from "../components/functions/auth/validation";
+import { SIGNUPURL } from "../constants/URL";
 
 export default function SignUpPage() {
   const [email, setEmail] = useState("");
@@ -18,8 +19,6 @@ export default function SignUpPage() {
       navigate("/auth/login");
     }
   }, []);
-
-  const SIGNUPURL = "http://localhost:8080/users/create";
 
   const postSignUp = () => {
     postAuth(SIGNUPURL, email, password);

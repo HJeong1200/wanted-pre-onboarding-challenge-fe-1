@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { TodoList } from "./TodoList";
-import { Outlet, useOutletContext } from "react-router";
+import { Outlet } from "react-router";
 import requestHeaders from "../constants/Header";
 import useGetTodos from "../hooks/useGetTodos";
-import { TodoType } from "../types/Types";
+import { TODOSURL } from "../constants/URL";
 
 export function Main() {
   const { todoList, setTodoList } = useGetTodos();
@@ -26,7 +26,7 @@ export function Main() {
       content: newTodoContent,
     };
 
-    fetch("http://localhost:8080/todos", {
+    fetch(TODOSURL, {
       method: "POST",
       headers: requestHeaders,
       body: JSON.stringify(body),
