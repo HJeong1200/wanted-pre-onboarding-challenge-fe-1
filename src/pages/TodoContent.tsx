@@ -1,6 +1,7 @@
 import React from "react";
 import { useNavigate, useOutletContext, useParams } from "react-router";
 import { TodoType } from "../types/Types";
+import requestHeaders from "../constants/Header";
 
 export function TodoContent() {
   const params = useParams();
@@ -10,12 +11,6 @@ export function TodoContent() {
   const navigate = useNavigate();
 
   const deleteTodo = () => {
-    const requestHeaders: HeadersInit = new Headers();
-    requestHeaders.set(
-      "Authorization",
-      localStorage.getItem("token") || "no token"
-    );
-
     fetch(`http://localhost:8080/todos/${id}`, {
       method: "DELETE",
       headers: requestHeaders,

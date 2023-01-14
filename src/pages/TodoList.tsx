@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
 import { TodoType } from "../types/Types";
+import requestHeaders from "../constants/Header";
 
 type TodoProps = {
   todoList: TodoType[];
@@ -10,12 +11,6 @@ type TodoProps = {
 
 export function TodoList({ todoList, setTodoList }: TodoProps) {
   const navigate = useNavigate();
-
-  const requestHeaders: HeadersInit = new Headers();
-  requestHeaders.set(
-    "Authorization",
-    localStorage.getItem("token") || "no token"
-  );
 
   useEffect(() => {
     if (!localStorage.getItem("token")) {

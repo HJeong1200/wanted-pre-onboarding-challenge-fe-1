@@ -2,17 +2,12 @@ import React, { useState } from "react";
 import { TodoList } from "./TodoList";
 import { TodoType } from "../types/Types";
 import { Outlet } from "react-router";
+import requestHeaders from "../constants/Header";
 
 export function Main() {
   const [todoList, setTodoList] = React.useState<TodoType[] | []>([]);
   const [newTodoTitle, setNewTodoTitle] = useState("");
   const [newTodoContent, setNewTodoContent] = useState("");
-
-  const requestHeaders: HeadersInit = new Headers();
-  requestHeaders.set(
-    "Authorization",
-    localStorage.getItem("token") || "no token"
-  );
 
   const inputNewTodoTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTodoTitle = e.target.value;
@@ -25,8 +20,6 @@ export function Main() {
   };
 
   const submitNewTodo = () => {
-    requestHeaders.set("Content-Type", "application/json");
-
     const body = {
       title: newTodoTitle,
       content: newTodoContent,
@@ -38,8 +31,8 @@ export function Main() {
       body: JSON.stringify(body),
     })
       .then((res) => res.json())
-      .then((data) => {
-        setTodoList([...todoList, data.data]);
+      .then(({ data }) => {
+        setTodoList([...todoList, data]);
       });
   };
 
