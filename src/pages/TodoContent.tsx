@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import requestHeaders from "../constants/Header";
 import useGetTodo from "../hooks/useGetTodo";
@@ -5,9 +6,12 @@ import useGetTodo from "../hooks/useGetTodo";
 export function TodoContent() {
   const params = useParams();
   const navigate = useNavigate();
-  console.log(params.id);
   const curTodo = useGetTodo(params.id);
-  console.log(curTodo);
+  const { title, content, createdAt, updatedAt } = curTodo;
+  const [isEditMode, setIsEditMode] = useState(false);
+  const [editedTitle, setEditedTitle] = useState(title);
+  const [editedContent, setEditedContent] = useState(content);
+
   const deleteTodo = () => {
     fetch(`http://localhost:8080/todos/${params.id}`, {
       method: "DELETE",
@@ -18,15 +22,63 @@ export function TodoContent() {
     });
   };
 
+  const editTodo = () => {
+    setIsEditMode((isEditMode) => !isEditMode);
+    setEditedTitle(title);
+    setEditedContent(content);
+  };
+
+  const editTodoTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedTitle(e.target.value);
+  };
+
+  const editTodoContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setEditedContent(e.target.value);
+  };
+
+  const sendEditedTodo = () => {
+    const body = {
+      title: editedTitle,
+      content: editedContent,
+    };
+
+    fetch(`http://localhost:8080/todos/${params.id}`, {
+      method: "PUT",
+      headers: requestHeaders,
+      body: JSON.stringify(body),
+    })
+      .then((res) => res.json())
+      .then(() => window.location.reload());
+  };
+
   return (
     <div className="Todo_Content_Container">
-      <div className="Todo_Content_Title">{curTodo.title}</div>
-      <div className="Todo_Content_Content">{curTodo.content}</div>
-      <div className="Todo_Content_Time">
-        {curTodo.updatedAt || curTodo.createdAt}
+      <div className="Todo_Content_Title">
+        {isEditMode ? (
+          <input onChange={editTodoTitle} defaultValue={title} />
+        ) : (
+          title
+        )}
       </div>
-      <button>수정</button>
-      <button onClick={deleteTodo}>삭제</button>
+      <div className="Todo_Content_Content">
+        {isEditMode ? (
+          <textarea onChange={editTodoContent} defaultValue={content} />
+        ) : (
+          content
+        )}
+      </div>
+      <div className="Todo_Content_Time">{updatedAt || createdAt}</div>
+      {isEditMode ? (
+        <>
+          <button onClick={sendEditedTodo}>수정</button>
+          <button onClick={editTodo}>취소</button>
+        </>
+      ) : (
+        <>
+          <button onClick={editTodo}>수정</button>
+          <button onClick={deleteTodo}>삭제</button>
+        </>
+      )}
     </div>
   );
 }
