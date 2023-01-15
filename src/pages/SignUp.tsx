@@ -20,10 +20,6 @@ export default function SignUpPage() {
     }
   }, []);
 
-  const postSignUp = () => {
-    submitAuthentication(SIGNUPURL, email, password);
-  };
-
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputEmail = e.target.value;
     setEmail(inputEmail);
@@ -36,7 +32,7 @@ export default function SignUpPage() {
 
   const submitSignUpForm = () => {
     if (isValidEmail(email) && isValidPassword(password)) {
-      postSignUp();
+      submitAuthentication(SIGNUPURL, email, password);
     } else {
       console.log("Invalid");
     }
