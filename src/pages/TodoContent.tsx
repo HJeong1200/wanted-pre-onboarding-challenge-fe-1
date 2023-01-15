@@ -15,13 +15,15 @@ export function TodoContent() {
   const CONTENTURL = `${TODOSURL}/${params.id}`;
 
   const deleteTodo = () => {
-    fetch(CONTENTURL, {
-      method: "DELETE",
-      headers: requestHeaders,
-    }).then(() => {
-      navigate("/");
-      window.location.reload();
-    });
+    if (window.confirm("정말 삭제하시겠습니까?")) {
+      fetch(CONTENTURL, {
+        method: "DELETE",
+        headers: requestHeaders,
+      }).then(() => {
+        navigate("/");
+        window.location.reload();
+      });
+    }
   };
 
   const editTodo = () => {
@@ -39,18 +41,20 @@ export function TodoContent() {
   };
 
   const sendEditedTodo = () => {
-    const body = {
-      title: editedTitle,
-      content: editedContent,
-    };
+    if (window.confirm("정말 업데이트하시겠습니까?")) {
+      const body = {
+        title: editedTitle,
+        content: editedContent,
+      };
 
-    fetch(CONTENTURL, {
-      method: "PUT",
-      headers: requestHeaders,
-      body: JSON.stringify(body),
-    })
-      .then((res) => res.json())
-      .then(() => window.location.reload());
+      fetch(CONTENTURL, {
+        method: "PUT",
+        headers: requestHeaders,
+        body: JSON.stringify(body),
+      })
+        .then((res) => res.json())
+        .then(() => window.location.reload());
+    }
   };
 
   return (

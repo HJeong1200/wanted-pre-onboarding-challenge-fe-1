@@ -1,11 +1,12 @@
 import React, { useEffect } from "react";
 import requestHeaders from "../constants/Header";
+import { TODOSURL } from "../constants/URL";
 import { TodoType } from "../types/Types";
 
 const useGetTodo = (id: any) => {
   const [curTodo, setCurTodo] = React.useState<TodoType>({} as TodoType);
   useEffect(() => {
-    fetch(`http://localhost:8080/todos/${id}`, {
+    fetch(`${TODOSURL}/${id}`, {
       method: "GET",
       headers: requestHeaders,
     })
