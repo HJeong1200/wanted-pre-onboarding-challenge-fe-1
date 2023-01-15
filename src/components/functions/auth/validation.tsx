@@ -1,11 +1,11 @@
-const emailValidation = (email: string) => {
+const isValidEmail = (email: string) => {
   if (email.includes("@") && email.includes(".")) return true;
   return false;
 };
 
-const passwordValidation = (password: string) => {
+const isValidPassword = (password: string) => {
   if (password.length >= 8) return true;
   return false;
 };
 
-export { emailValidation, passwordValidation };
+export { isValidEmail, isValidPassword };

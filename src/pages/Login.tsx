@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { postAuth } from "../components/functions/auth/postAuth";
+import { submitAuthentication } from "../components/functions/auth/submitAuthentication";
 import {
-  emailValidation,
-  passwordValidation,
+  isValidEmail,
+  isValidPassword,
 } from "../components/functions/auth/validation";
 import { LOGINURL } from "../constants/URL";
 
@@ -21,7 +21,7 @@ export default function LoginPage() {
   }, []);
 
   const postLogin = () => {
-    postAuth(LOGINURL, email, password);
+    submitAuthentication(LOGINURL, email, password);
   };
 
   const changeEmail = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +35,7 @@ export default function LoginPage() {
   };
 
   const submitLoginForm = () => {
-    if (emailValidation(email) && passwordValidation(password)) {
+    if (isValidEmail(email) && isValidPassword(password)) {
       postLogin();
     } else {
       console.log("Invalid");

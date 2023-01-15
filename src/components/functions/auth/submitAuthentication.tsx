@@ -1,4 +1,8 @@
-export const postAuth = (url: string, email: string, password: string) => {
+export const submitAuthentication = (
+  url: string,
+  email: string,
+  password: string
+) => {
   const body = {
     email,
     password,
